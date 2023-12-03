@@ -1,4 +1,4 @@
-package Day3_2023;
+package Day3_2023.Part_1;
 
 public class DigitInGrid {
     private final String numberAsString;

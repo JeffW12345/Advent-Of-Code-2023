@@ -1,4 +1,4 @@
-package Day3_2023;
+package Day3_2023.Part_1;
 
 import java.util.ArrayList;
 import java.util.List;

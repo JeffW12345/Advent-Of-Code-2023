@@ -1,16 +1,16 @@
-package Day3_2023;
+package Day3_2023.Part_2;
 
 import java.io.File;
 import java.util.Scanner;
 
-public class Day3 {
+public class Day3Part2 {
     private static final File FILE = new File("src/main/resources/engine.txt");
     private static final Grid GRID = new Grid();
 
     public static void main(String[] args) {
         importData();
-        NumbersInGrid numbersInGrid = new NumbersInGrid(GRID);
-        System.out.println("Output: " + numbersInGrid.getTotal());
+        FullNumbersInGrid numbersInGrid = new FullNumbersInGrid(GRID);
+        System.out.println("Output: " + numbersInGrid.getFactorTotal());
     }
 
     private static void importData() {

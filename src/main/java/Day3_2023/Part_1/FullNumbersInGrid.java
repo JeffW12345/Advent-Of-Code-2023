@@ -1,12 +1,12 @@
-package Day3_2023;
+package Day3_2023.Part_1;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NumbersInGrid {
+public class FullNumbersInGrid {
     private final Grid grid;
 
-    public NumbersInGrid(Grid grid) {
+    public FullNumbersInGrid(Grid grid) {
         this.grid = grid;
     }
 
@@ -36,7 +36,7 @@ public class NumbersInGrid {
         return listOfListOfAdjoiningDigits;
     }
 
-    public int getTotal(){
+    public int getTotalOfNumbersNextToSymbols(){
         int total = 0;
         List<List<DigitInGrid>> listOfListOfAdjoiningDigits = getListOfListOfAdjoiningDigits();
         for(List<DigitInGrid> list : listOfListOfAdjoiningDigits){
