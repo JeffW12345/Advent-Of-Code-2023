@@ -7,8 +7,8 @@ import java.util.regex.Pattern;
 
 public class Grid {
     public final List<List<Character>> gridMatrix = new ArrayList<>();
-    public int numberOfRows;
-    public int numberOfColumns;
+    private int numberOfRows;
+    private int numberOfColumns;
 
     public void addRow(String row){
         numberOfColumns = row.length();
@@ -30,48 +30,47 @@ public class Grid {
                 Character.isDigit(getCharacterAt(rowNumber, columnNumber + 1));
     }
 
-    public boolean isLeftHorizontalNeighbourASymbol(int rowNumber, int columnNumber) {
+    private boolean isLeftHorizontalNeighbourASymbol(int rowNumber, int columnNumber) {
         return (columnNumber - 1) >= 0 &&
                 isCharacterNotAPeriodOrDigit(rowNumber, columnNumber - 1);
     }
 
-    public boolean isRightHorizontalNeighbourASymbol(int rowNumber, int columnNumber) {
+    private boolean isRightHorizontalNeighbourASymbol(int rowNumber, int columnNumber) {
         return (columnNumber + 1) <= (numberOfColumns - 1) &&
                 isCharacterNotAPeriodOrDigit(rowNumber, columnNumber + 1);
     }
 
-    public boolean isDirectlyAboveASymbol(int rowNumber, int columnNumber) {
+    private boolean isDirectlyAboveASymbol(int rowNumber, int columnNumber) {
         return rowAboveExists(rowNumber) &&
                 isCharacterNotAPeriodOrDigit(rowNumber - 1, columnNumber);
     }
 
-    public boolean isDirectlyBelowASymbol(int rowNumber, int columnNumber) {
+    private boolean isDirectlyBelowASymbol(int rowNumber, int columnNumber) {
         return rowBelowExists(rowNumber) &&
                 isCharacterNotAPeriodOrDigit(rowNumber + 1, columnNumber);
     }
 
-    public boolean isLeftUpDiagnoalNeighbourASymbol(int rowNumber, int columnNumber) {
+    private boolean isLeftUpDiagnoalNeighbourASymbol(int rowNumber, int columnNumber) {
         return rowAboveExists(rowNumber) && columnToLeftExists(columnNumber) &&
                 isCharacterNotAPeriodOrDigit(rowNumber - 1, columnNumber - 1);
     }
 
-    public boolean isLeftDownDiagonalNeighbourASymbol(int rowNumber, int columnNumber) {
+    private boolean isLeftDownDiagonalNeighbourASymbol(int rowNumber, int columnNumber) {
         return rowBelowExists(rowNumber) && columnToLeftExists(columnNumber) &&
                 isCharacterNotAPeriodOrDigit(rowNumber + 1, columnNumber - 1);
     }
 
-    public boolean isRightUpDiagnoalNeighbourASymbol(int rowNumber, int columnNumber) {
+    private boolean isRightUpDiagnoalNeighbourASymbol(int rowNumber, int columnNumber) {
         return rowAboveExists(rowNumber) &&
                 columnToRightExists(columnNumber) &&
                 isCharacterNotAPeriodOrDigit(rowNumber - 1, columnNumber + 1);
     }
 
-    public boolean isRightDownDiagonalNeighbourASymbol(int rowNumber, int columnNumber) {
+    private boolean isRightDownDiagonalNeighbourASymbol(int rowNumber, int columnNumber) {
         return rowBelowExists(rowNumber) &&
                 columnToRightExists(columnNumber) &&
                 isCharacterNotAPeriodOrDigit(rowNumber + 1, columnNumber + 1);
     }
-
 
     private boolean columnToRightExists(int columnNumber){
         return (columnNumber + 1) <= (numberOfColumns - 1);
@@ -104,7 +103,7 @@ public class Grid {
         return Character.isDigit(getCharacterAt(rowNumber, columnNumber));
     }
 
-    public boolean isCharacterNotAPeriodOrDigit(int rowNumber, int columnNumber) {
+    private boolean isCharacterNotAPeriodOrDigit(int rowNumber, int columnNumber) {
         char toCheck = getCharacterAt(rowNumber, columnNumber);
         Pattern pattern = Pattern.compile("[^\\d.]");
         String toCheckAsString = String.valueOf(toCheck);

@@ -19,12 +19,12 @@ public class NumbersInGrid {
                 if (grid.isDigit(rowNumber, columnNumber)) {
                     if(grid.isRightHorizontalNeighbourADigit(rowNumber, columnNumber)){
                         adjoiningDigits.add(new DigitInGrid(
-                                String.valueOf(grid.getCharacterAt(rowNumber, columnNumber)),
+                                grid.getCharacterAt(rowNumber, columnNumber),
                                 grid.anyNeighbouringSymbols(rowNumber, columnNumber)
                         ));
                     } else{
                         adjoiningDigits.add(new DigitInGrid(
-                                String.valueOf(grid.getCharacterAt(rowNumber, columnNumber)),
+                                grid.getCharacterAt(rowNumber, columnNumber),
                                 grid.anyNeighbouringSymbols(rowNumber, columnNumber)
                         ));
                         listOfListOfAdjoiningDigits.add(adjoiningDigits);
@@ -44,7 +44,7 @@ public class NumbersInGrid {
             StringBuilder numberAsString = new StringBuilder();
             for(DigitInGrid digitInGrid : list){
                 numberAsString.append(digitInGrid.getNumberAsString());
-                if(digitInGrid.isAnyNeighbouringSymbols()) {anyAdjoiningSymbols = true;}
+                if(digitInGrid.areThereNeighbouringSymbols()) {anyAdjoiningSymbols = true;}
             }
             if(anyAdjoiningSymbols){
                 total += Integer.parseInt(numberAsString.toString());

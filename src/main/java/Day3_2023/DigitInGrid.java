@@ -2,16 +2,15 @@ package Day3_2023;
 
 public class DigitInGrid {
     private final String numberAsString;
-    private final boolean anyNeighbouringSymbols;
+    private final boolean areThereNeighbouringSymbols;
 
-
-    public DigitInGrid(String numberAsString, boolean anyNeighbouringSymbols) {
-        this.numberAsString = numberAsString;
-        this.anyNeighbouringSymbols = anyNeighbouringSymbols;
+    public DigitInGrid(Character digit, boolean anyNeighbouringSymbols) {
+        this.numberAsString = String.valueOf(digit);
+        this.areThereNeighbouringSymbols = anyNeighbouringSymbols;
     }
 
-    public boolean isAnyNeighbouringSymbols() {
-        return anyNeighbouringSymbols;
+    public boolean areThereNeighbouringSymbols() {
+        return areThereNeighbouringSymbols;
     }
 
     public String getNumberAsString(){
