@@ -13,16 +13,7 @@ The engine schematic (your puzzle input) consists of a visual representation of 
 
 Here is an example engine schematic:
   
-467..114..  
-...*......  
-..35..633.  
-......#...  
-617*......  
-.....+.58.  
-..592.....  
-......755.  
-...$.*....  
-.664.598..   
+<img width="118" alt="image" src="https://github.com/JeffW12345/Advent-Of-Code-2023/assets/59927061/b7f47d1a-7eaf-4616-b57b-30eba84e0abf"> 
   
 In this schematic, two numbers are not part numbers because they are not adjacent to a symbol: 114 (top right) and 58 (middle right). Every other number is adjacent to a symbol and so is a part number; their sum is 4361.
 
@@ -41,16 +32,8 @@ This time, you need to find the gear ratio of every gear and add them all up so 
 
 Consider the same engine schematic again:
   
-467..114..  
-...*......  
-..35..633.  
-......#...  
-617*......  
-.....+.58.  
-..592.....  
-......755.  
-...$.*....  
-.664.598..  
+<img width="118" alt="image" src="https://github.com/JeffW12345/Advent-Of-Code-2023/assets/59927061/000a13fa-eb7b-4ca5-8cc5-714c12753cc9">
+ 
   
 In this schematic, there are two gears. The first is in the top left; it has part numbers 467 and 35, so its gear ratio is 16345. The second gear is in the lower right; its gear ratio is 451490. (The * adjacent to 617 is not a gear because it is only adjacent to one part number.) Adding up all of the gear ratios produces 467835.
 
