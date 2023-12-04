@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cards {
-    private final List<Card> cards = new ArrayList<>();
+    private final List<Card> CARDS = new ArrayList<>();
 
     public void add(Card card){
-        cards.add(card);
+        CARDS.add(card);
     }
     public int totalAllCards() {
-        return cards.stream()
+        return CARDS.stream()
                 .mapToInt(Card::getCardTotal)
                 .sum();
     }
