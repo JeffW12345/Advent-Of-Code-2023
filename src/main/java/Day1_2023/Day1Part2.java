@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class Day1 {
+// The code for Part 1 was removed before I pushed my code.
+
+public class Day1Part2 {
     private static final File FILE = new File("src/main/resources/words.txt");
     private static final List<String> INPUT_LINES = new ArrayList<>();
     private static final Map<String, Integer> SPELLED_OUT_DIGITS_TO_DIGITS_MAP = Map.of(
