@@ -7,36 +7,44 @@ public class Day5Part1 {
     private static final File FILE = new File("src/main/resources/garden.txt");
     private static final List<String> INPUT_LINES = new ArrayList<>();
     private static final List<Long> SEEDS = new ArrayList<>();
-    private static final HashMap<Long, Long> SEED_TO_SOIL = new HashMap<>();
-    private static final HashMap<Long, Long> SOIL_TO_FERTILISER = new HashMap<>();
-    private static final HashMap<Long, Long> FERTILISER_TO_WATER = new HashMap<>();
-    private static final HashMap<Long, Long> WATER_TO_LIGHT = new HashMap<>();
-    private static final HashMap<Long, Long> LIGHT_TO_TEMPERATURE = new HashMap<>();
-    private static final HashMap<Long, Long> TEMPERATURE_TO_HUMIDITY = new HashMap<>();
-    private static final HashMap<Long, Long> HUMIDITY_TO_LOCATION = new HashMap<>();
+    private static final List<Mapping> SEED_TO_SOIL = new ArrayList<>();
+    private static final List<Mapping> SOIL_TO_FERTILISER = new ArrayList<>();
+    private static final List<Mapping> FERTILISER_TO_WATER = new ArrayList<>();
+    private static final List<Mapping> WATER_TO_LIGHT = new ArrayList<>();
+    private static final List<Mapping> LIGHT_TO_TEMPERATURE = new ArrayList<>();
+    private static final List<Mapping> TEMPERATURE_TO_HUMIDITY = new ArrayList<>();
+    private static final List<Mapping> HUMIDITY_TO_LOCATION = new ArrayList<>();
 
     public static void main(String[] args) {
         importData();
         extractImportedDataToCollections();
         List<Long> locations = getLocations();
-        long lowestNumber =  locations.stream().min(Long::compare).orElseThrow();
+        long lowestNumber = locations.stream().min(Long::compare).orElseThrow();
         System.out.println("The lowest location number is: " + lowestNumber);
     }
 
     private static List<Long> getLocations() {
         List<Long> locations = new ArrayList<>();
         for (long seedNumber : SEEDS) {
-            long soilNumber = SEED_TO_SOIL.getOrDefault(seedNumber, seedNumber);
-            long fertiliserNumber = SOIL_TO_FERTILISER.getOrDefault(soilNumber, soilNumber);
-            long waterNumber = FERTILISER_TO_WATER.getOrDefault(fertiliserNumber, fertiliserNumber);
-            long lightNumber = WATER_TO_LIGHT.getOrDefault(waterNumber, waterNumber);
-            long temperatureNumber = LIGHT_TO_TEMPERATURE.getOrDefault(lightNumber, lightNumber);
-            long humidityNumber = TEMPERATURE_TO_HUMIDITY.getOrDefault(temperatureNumber, temperatureNumber);
-            locations.add(HUMIDITY_TO_LOCATION.getOrDefault(humidityNumber, humidityNumber));
+            long soilNumber = calculateValuesFromKeys(SEED_TO_SOIL, seedNumber);
+            long fertiliserNumber = calculateValuesFromKeys(SOIL_TO_FERTILISER, soilNumber);
+            long waterNumber = calculateValuesFromKeys(FERTILISER_TO_WATER, fertiliserNumber);
+            long lightNumber = calculateValuesFromKeys(WATER_TO_LIGHT, waterNumber);
+            long temperatureNumber = calculateValuesFromKeys(LIGHT_TO_TEMPERATURE, lightNumber);
+            long humidityNumber = calculateValuesFromKeys(TEMPERATURE_TO_HUMIDITY, temperatureNumber);
+            locations.add(calculateValuesFromKeys(HUMIDITY_TO_LOCATION, humidityNumber));
         }
         return locations;
     }
 
+    private static long calculateValuesFromKeys(List<Mapping> mappings, long inputValue) {
+        for (Mapping mapping : mappings) {
+            if (mapping.withinRange(inputValue)) {
+                return mapping.calculateValueFromKey(inputValue);
+            }
+        }
+        return inputValue;
+    }
 
     private static void importData() {
         try (Scanner scanner = new Scanner(FILE)) {
@@ -50,8 +58,8 @@ public class Day5Part1 {
         }
     }
 
-    private static void extractImportedDataToCollections(){
-        boolean seadToSoilMapReadyForMapping = false;
+    private static void extractImportedDataToCollections() {
+        boolean seedToSoilMapReadyForMapping = false;
         boolean soilToFertiliserMapReadyForMapping = false;
         boolean fertiliserToWaterMapReadyForMapping = false;
         boolean waterToLightMapReadyForMapping = false;
@@ -59,141 +67,148 @@ public class Day5Part1 {
         boolean temperatureToHumidityMapReadyForMapping = false;
         boolean humidityToLocationMapReadyForMapping = false;
 
-        for(String line : INPUT_LINES){
-            if(line.contains("seeds")) extractSeedNumbers(line);
+        for (String line : INPUT_LINES) {
+            if (line.contains("seeds")) extractSeedNumbers(line);
 
-            if(line.contains("seed-to-soil map")) {
-                seadToSoilMapReadyForMapping = true;
+            if (line.contains("seed-to-soil map")) {
+                seedToSoilMapReadyForMapping = true;
             }
-            if(line.contains("soil-to-fertilizer map")) {
+            if (line.contains("soil-to-fertilizer map")) {
                 soilToFertiliserMapReadyForMapping = true;
-                seadToSoilMapReadyForMapping = false;
+                seedToSoilMapReadyForMapping = false;
             }
-            if(line.contains("fertilizer-to-water map")) {
+            if (line.contains("fertilizer-to-water map")) {
                 fertiliserToWaterMapReadyForMapping = true;
                 soilToFertiliserMapReadyForMapping = false;
             }
-            if(line.contains("water-to-light map")) {
+            if (line.contains("water-to-light map")) {
                 waterToLightMapReadyForMapping = true;
                 fertiliserToWaterMapReadyForMapping = false;
             }
-            if(line.contains("light-to-temperature map")) {
+            if (line.contains("light-to-temperature map")) {
                 lightToTemperatureMapReadyForMapping = true;
                 waterToLightMapReadyForMapping = false;
             }
-            if(line.contains("temperature-to-humidity map")) {
+            if (line.contains("temperature-to-humidity map")) {
                 temperatureToHumidityMapReadyForMapping = true;
                 lightToTemperatureMapReadyForMapping = false;
             }
-            if(line.contains("humidity-to-location map")) {
+            if (line.contains("humidity-to-location map")) {
                 humidityToLocationMapReadyForMapping = true;
                 temperatureToHumidityMapReadyForMapping = false;
             }
 
-            if(seadToSoilMapReadyForMapping && line.matches("\\d+.*")){
+            if (seedToSoilMapReadyForMapping && line.matches("\\d+.*")) {
                 mapSeedToSoil(line);
             }
 
-            if(soilToFertiliserMapReadyForMapping && line.matches("\\d+.*")){
+            if (soilToFertiliserMapReadyForMapping && line.matches("\\d+.*")) {
                 mapSoilToFertliser(line);
             }
 
-            if(fertiliserToWaterMapReadyForMapping && line.matches("\\d+.*")){
+            if (fertiliserToWaterMapReadyForMapping && line.matches("\\d+.*")) {
                 mapFertiliserToWater(line);
             }
 
-            if(waterToLightMapReadyForMapping && line.matches("\\d+.*")){
+            if (waterToLightMapReadyForMapping && line.matches("\\d+.*")) {
                 mapWaterToLight(line);
             }
 
-            if(lightToTemperatureMapReadyForMapping && line.matches("\\d+.*")){
+            if (lightToTemperatureMapReadyForMapping && line.matches("\\d+.*")) {
                 mapLightToTemperature(line);
             }
 
-            if(temperatureToHumidityMapReadyForMapping && line.matches("\\d+.*")){
+            if (temperatureToHumidityMapReadyForMapping && line.matches("\\d+.*")) {
                 mapTemperatureToHumidity(line);
             }
-            if(humidityToLocationMapReadyForMapping && line.matches("\\d+.*")){
+            if (humidityToLocationMapReadyForMapping && line.matches("\\d+.*")) {
                 mapHumidityToLocation(line);
             }
         }
     }
 
     private static void mapHumidityToLocation(String line) {
-        String [] numbers = line.split(" ");
-        long humidityStartNumber = Long.parseLong(numbers[1]);
-        long locationStartNumber = Long.parseLong(numbers[0]);
-        long duration = Long.parseLong(numbers[2]);
+        String[] numbers = line.split(" ");
 
-        for(int mappingNumber = 0; mappingNumber < duration; mappingNumber++){
-            HUMIDITY_TO_LOCATION.put(humidityStartNumber++, locationStartNumber++);
-        }
+        Mapping mapping = new Mapping(
+                Long.parseLong(numbers[1]),
+                Long.parseLong(numbers[0]),
+                Long.parseLong(numbers[2])
+        );
+
+        HUMIDITY_TO_LOCATION.add(mapping);
     }
 
     private static void mapTemperatureToHumidity(String line) {
         String[] numbers = line.split(" ");
-        long temperatureStartNumber = Long.parseLong(numbers[1]);
-        long humidityStartNumber = Long.parseLong(numbers[0]);
-        long duration = Long.parseLong(numbers[2]);
 
-        for (int mappingNumber = 0; mappingNumber < duration; mappingNumber++) {
-            TEMPERATURE_TO_HUMIDITY.put(temperatureStartNumber++, humidityStartNumber++);
-        }
+        Mapping mapping = new Mapping(
+                Long.parseLong(numbers[1]),
+                Long.parseLong(numbers[0]),
+                Long.parseLong(numbers[2])
+        );
+
+        TEMPERATURE_TO_HUMIDITY.add(mapping);
     }
 
     private static void mapLightToTemperature(String line) {
         String[] numbers = line.split(" ");
-        long lightStartNumber = Long.parseLong(numbers[1]);
-        long temperatureStartNumber = Long.parseLong(numbers[0]);
-        long duration = Long.parseLong(numbers[2]);
 
-        for (int mappingNumber = 0; mappingNumber < duration; mappingNumber++) {
-            LIGHT_TO_TEMPERATURE.put(lightStartNumber++, temperatureStartNumber++);
-        }
+        Mapping mapping = new Mapping(
+                Long.parseLong(numbers[1]),
+                Long.parseLong(numbers[0]),
+                Long.parseLong(numbers[2])
+        );
+
+        LIGHT_TO_TEMPERATURE.add(mapping);
     }
 
     private static void mapWaterToLight(String line) {
         String[] numbers = line.split(" ");
-        long waterStartNumber = Long.parseLong(numbers[1]);
-        long lightStartNumber = Long.parseLong(numbers[0]);
-        long duration = Long.parseLong(numbers[2]);
 
-        for (int mappingNumber = 0; mappingNumber < duration; mappingNumber++) {
-            WATER_TO_LIGHT.put(waterStartNumber++, lightStartNumber++);
-        }
+        Mapping mapping = new Mapping(
+                Long.parseLong(numbers[1]),
+                Long.parseLong(numbers[0]),
+                Long.parseLong(numbers[2])
+        );
+
+        WATER_TO_LIGHT.add(mapping);
     }
 
     private static void mapFertiliserToWater(String line) {
         String[] numbers = line.split(" ");
-        long fertiliserStartNumber = Long.parseLong(numbers[1]);
-        long waterStartNumber = Long.parseLong(numbers[0]);
-        long duration = Long.parseLong(numbers[2]);
 
-        for (int mappingNumber = 0; mappingNumber < duration; mappingNumber++) {
-            FERTILISER_TO_WATER.put(fertiliserStartNumber++, waterStartNumber++);
-        }
+        Mapping mapping = new Mapping(
+                Long.parseLong(numbers[1]),
+                Long.parseLong(numbers[0]),
+                Long.parseLong(numbers[2])
+        );
+
+        FERTILISER_TO_WATER.add(mapping);
     }
 
     private static void mapSoilToFertliser(String line) {
         String[] numbers = line.split(" ");
-        long soilStartNumber = Long.parseLong(numbers[1]);
-        long fertiliserStartNumber = Long.parseLong(numbers[0]);
-        long duration = Long.parseLong(numbers[2]);
 
-        for (int mappingNumber = 0; mappingNumber < duration; mappingNumber++) {
-            SOIL_TO_FERTILISER.put(soilStartNumber++, fertiliserStartNumber++);
-        }
+        Mapping mapping = new Mapping(
+                Long.parseLong(numbers[1]),
+                Long.parseLong(numbers[0]),
+                Long.parseLong(numbers[2])
+        );
+
+        SOIL_TO_FERTILISER.add(mapping);
     }
 
     private static void mapSeedToSoil(String line) {
         String[] numbers = line.split(" ");
-        long seedStartNumber = Long.parseLong(numbers[1]);
-        long soilStartNumber = Long.parseLong(numbers[0]);
-        long duration = Long.parseLong(numbers[2]);
 
-        for (int mappingNumber = 0; mappingNumber < duration; mappingNumber++) {
-            SEED_TO_SOIL.put(seedStartNumber++, soilStartNumber++);
-        }
+        Mapping mapping = new Mapping(
+                Long.parseLong(numbers[1]),
+                Long.parseLong(numbers[0]),
+                Long.parseLong(numbers[2])
+        );
+
+        SEED_TO_SOIL.add(mapping);
     }
 
     private static void extractSeedNumbers(String line) {
