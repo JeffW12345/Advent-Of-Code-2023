@@ -1,4 +1,4 @@
-package Day_5;
+package Day_5.Part_1;
 
 import java.io.File;
 import java.util.*;
