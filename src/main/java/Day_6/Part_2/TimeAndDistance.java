@@ -8,8 +8,8 @@ public class TimeAndDistance {
     private final long raceDuration;
     private long raceDistanceToBeat;
 
-    public TimeAndDistance(long time) {
-        this.raceDuration = time;
+    public TimeAndDistance(long raceDuration) {
+        this.raceDuration = raceDuration;
     }
     public long getNumberOfWillingHoldTimes() {
         return calculateWinningHoldTimes().size();
