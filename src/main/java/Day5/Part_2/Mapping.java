@@ -1,4 +1,4 @@
-package Day_5.Part_2;
+package Day5.Part_2;
 
 class Mapping {
     private final long startNumber;

@@ -1,4 +1,4 @@
-package Day_6.Part_2;
+package Day6.Part_2;
 
 import java.io.File;
 import java.util.Scanner;
