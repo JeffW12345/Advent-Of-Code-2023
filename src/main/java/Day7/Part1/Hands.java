@@ -19,7 +19,7 @@ class Hands {
             if (h1.getHandValue() != h2.getHandValue()) {
                 return Long.compare(h1.getHandValue(), h2.getHandValue());
             } else {
-                return h1.getHandString().compareTo(h2.getHandString());
+                return h1.getHandAsString().compareTo(h2.getHandAsString());
             }
         });
 
@@ -32,7 +32,7 @@ class Hands {
 
             if(previousHand == null){
                 currentHand.setHandRanking(currentRank);
-                System.out.println("Hand: " + currentHand.getHandString() + " Ranking: "
+                System.out.println("Hand: " + currentHand.getHandAsString() + " Ranking: "
                         + currentHand.getHandRanking() + " Value: " + currentHand.getHandValue());
                 continue;
             }
@@ -40,7 +40,7 @@ class Hands {
                 currentHand.setHandRanking(currentRank);
                 int equalsValuesIncrement = numberOfEqualsValues == 0 ? 2 : 1;
                 numberOfEqualsValues += equalsValuesIncrement;
-                System.out.println("Hand: " + currentHand.getHandString() + " Ranking: "
+                System.out.println("Hand: " + currentHand.getHandAsString() + " Ranking: "
                         + currentHand.getHandRanking() + " Value: " + currentHand.getHandValue() +
                         " Equal value: " + numberOfEqualsValues);
                 continue;
@@ -51,7 +51,7 @@ class Hands {
                 currentRank += increment;
                 numberOfEqualsValues = 0;
                 currentHand.setHandRanking(currentRank);
-                System.out.println("Hand: " + currentHand.getHandString() + " Ranking: "
+                System.out.println("Hand: " + currentHand.getHandAsString() + " Ranking: "
                         + currentHand.getHandRanking() + " Value: " + currentHand.getHandValue());
             }
         }

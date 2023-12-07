@@ -4,19 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 class Hand {
-    private final String handString;
+    private final String handAsString;
     private final int handBid;
     private final long handValue;
     private int handRanking;
-    private final Map<Character, Integer> CHARACTER_TO_VALUE;
+    private final Map<Character, Integer> CHARACTER_TO_CHARACTER_VALUE_MAP;
     private final Map<Character, Integer> CHARACTER_TO_QUANTITY;
-    private final char[] cards = {'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'};
+    private final char[] cardsTypes = {'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'};
     private final int DISTINCT_CARD_COUNT;
 
     public Hand(String handString, int handBid) {
-        this.handString = handString;
+        this.handAsString = handString;
         this.handBid = handBid;
-        this.CHARACTER_TO_VALUE = createCardValueMap();
+        this.CHARACTER_TO_CHARACTER_VALUE_MAP = createCardValueMap();
         this.CHARACTER_TO_QUANTITY = createCharacterToQuantityMap();
         this.DISTINCT_CARD_COUNT = (int) CHARACTER_TO_QUANTITY.keySet().stream()
                 .filter(card -> CHARACTER_TO_QUANTITY.get(card) == 1)
@@ -27,7 +27,7 @@ class Hand {
     private Map<Character, Integer> createCharacterToQuantityMap() {
         Map<Character, Integer> characterToQuantity = new HashMap<>();
 
-        for (char cardEntry : handString.toCharArray()) {
+        for (char cardEntry : handAsString.toCharArray()) {
             characterToQuantity.put(cardEntry, characterToQuantity.getOrDefault(cardEntry, 0) + 1);
         }
 
@@ -38,7 +38,7 @@ class Hand {
         Map<Character, Integer> cardValueMap = new HashMap<>();
 
         int value = 13;
-        for (char card : cards) {
+        for (char card : cardsTypes) {
             cardValueMap.put(card, value);
             value--;
         }
@@ -111,14 +111,14 @@ class Hand {
         return false;
     }
 
-    private long getCardValue(int categoryImportance) {
+    private long getCardValue(int handTypeImportance) {
         int total = 0;
         long toMultiplyBy = (long) Math.pow(13, 4);
-        for (char character : handString.toCharArray()) {
-            total += (CHARACTER_TO_VALUE.get(character) * toMultiplyBy);
+        for (char character : handAsString.toCharArray()) {
+            total += (CHARACTER_TO_CHARACTER_VALUE_MAP.get(character) * toMultiplyBy);
             toMultiplyBy /= 13;
         }
-        return (long) (total + (categoryImportance * Math.pow(13, 5)));
+        return (long) (total + (handTypeImportance * Math.pow(13, 5)));
     }
 
     public int getHandRanking() {
@@ -137,7 +137,7 @@ class Hand {
         return handValue;
     }
 
-    public String getHandString(){
-        return handString;
+    public String getHandAsString(){
+        return handAsString;
     }
 }
